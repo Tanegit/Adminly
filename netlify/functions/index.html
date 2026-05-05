@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Adminly — Your life admin, finally handled</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--cream:#FAF8F4;--ink:#1A1814;--muted:#6B6660;--accent:#C8622A;--accent-light:#F2E8DF;--border:#E4DED6;--white:#FFFFFF}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);line-height:1.6;overflow-x:hidden}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2.5rem;border-bottom:1px solid var(--border);background:var(--cream);position:sticky;top:0;z-index:100}
+.logo{font-family:'Lora',serif;font-size:1.2rem;font-weight:600;letter-spacing:-0.01em}
+.logo span{color:var(--accent)}
+.nav-cta{background:var(--ink);color:var(--white);border:none;padding:0.5rem 1.25rem;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:500;cursor:pointer;transition:opacity 0.15s}
+.nav-cta:hover{opacity:0.8}
+.hero{display:grid;grid-template-columns:1fr 1fr;min-height:88vh;gap:0}
+.hero-left{padding:5rem 3rem 4rem 2.5rem;display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--border)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--accent-light);color:var(--accent);font-size:0.78rem;font-weight:500;padding:0.35rem 0.85rem;border-radius:100px;margin-bottom:2rem;letter-spacing:0.03em}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block}
+h1{font-family:'Lora',serif;font-size:clamp(2.4rem,4vw,3.4rem);line-height:1.15;font-weight:600;letter-spacing:-0.02em;margin-bottom:1.5rem}
+h1 em{font-style:italic;color:var(--accent)}
+.hero-sub{font-size:1.05rem;color:var(--muted);max-width:440px;line-height:1.7;margin-bottom:2.5rem;font-weight:300}
+.signup-form{display:flex;gap:10px;max-width:420px}
+.signup-form input{flex:1;border:1.5px solid var(--border);background:var(--white);border-radius:100px;padding:0.75rem 1.25rem;font-family:'DM Sans',sans-serif;font-size:0.9rem;color:var(--ink);outline:none;transition:border-color 0.15s}
+.signup-form input:focus{border-color:var(--accent)}
+.signup-form input::placeholder{color:#B0A9A2}
+.signup-form button{background:var(--accent);color:var(--white);border:none;border-radius:100px;padding:0.75rem 1.5rem;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:500;cursor:pointer;white-space:nowrap;transition:opacity 0.15s;min-width:130px}
+.signup-form button:hover{opacity:0.88}
+.signup-form button:disabled{opacity:0.6;cursor:not-allowed}
+.hero-note{margin-top:1rem;font-size:0.78rem;color:var(--muted)}
+.success-msg{display:none;align-items:center;gap:8px;background:#EAF6ED;border:1px solid #C3E6CB;border-radius:100px;padding:0.6rem 1.1rem;font-size:0.85rem;color:#2D6A3F;margin-top:0.75rem;max-width:420px}
+.success-msg.show{display:flex}
+.error-msg{display:none;font-size:0.82rem;color:#A32D2D;margin-top:0.5rem}
+.error-msg.show{display:block}
+.count{display:flex;align-items:center;gap:10px;margin-top:2rem}
+.avatars{display:flex}
+.av{width:28px;height:28px;border-radius:50%;border:2px solid var(--cream);margin-left:-6px;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:500;color:var(--muted)}
+.av:first-child{margin-left:0}
+.av.a1{background:#D4C4B8}.av.a2{background:#C4B8A8}.av.a3{background:#B8A898}
+.count-text{font-size:0.82rem;color:var(--muted)}
+.count-text strong{color:var(--ink);font-weight:500}
+.hero-right{background:var(--white);padding:3rem 2.5rem;display:flex;align-items:center;justify-content:center}
+.chat-mockup{width:100%;max-width:380px}
+.chat-header{display:flex;align-items:center;gap:10px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.chat-avatar{width:36px;height:36px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:var(--white);font-size:14px;font-weight:500;font-family:'Lora',serif}
+.chat-name{font-size:0.9rem;font-weight:500}
+.chat-status{font-size:0.75rem;color:#5BAD6F}
+.msg{margin-bottom:1rem;animation:fadeUp 0.4s ease both}
+.msg-ai{display:flex;gap:10px;align-items:flex-start}
+.msg-ai-inner{background:var(--accent-light);border-radius:4px 16px 16px 16px;padding:0.75rem 1rem;font-size:0.88rem;line-height:1.55;max-width:85%;color:var(--ink)}
+.msg-user{display:flex;justify-content:flex-end}
+.msg-user-inner{background:var(--ink);color:var(--white);border-radius:16px 4px 16px 16px;padding:0.75rem 1rem;font-size:0.88rem;line-height:1.55;max-width:85%}
+.msg-sm{width:22px;height:22px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;color:var(--white);font-size:10px;font-weight:500;flex-shrink:0;margin-top:2px;font-family:'Lora',serif}
+.typing{display:flex;align-items:center;gap:10px;margin-top:0.5rem}
+.dots{display:flex;gap:4px;background:var(--accent-light);padding:0.6rem 0.9rem;border-radius:4px 16px 16px 16px}
+.d{width:6px;height:6px;border-radius:50%;background:var(--accent);opacity:0.4;animation:pulse 1.2s infinite}
+.d:nth-child(2){animation-delay:0.2s}.d:nth-child(3){animation-delay:0.4s}
+.tasks-strip{border-top:1px solid var(--border);margin-top:1.5rem;padding-top:1rem}
+.tasks-label{font-size:0.72rem;font-weight:500;color:var(--muted);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:0.75rem}
+.task{display:flex;align-items:center;gap:8px;margin-bottom:0.5rem;font-size:0.8rem;color:var(--muted)}
+.task-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.td-done{background:#5BAD6F}.td-pending{background:var(--accent)}.td-waiting{background:var(--border)}
+.task-text{flex:1}.task-done{text-decoration:line-through;opacity:0.5}
+.problems{padding:5rem 2.5rem;border-top:1px solid var(--border)}
+.section-label{font-size:0.75rem;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem}
+.problems-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.prob{background:var(--cream);padding:1.75rem 1.5rem}
+.prob-icon{font-size:1.4rem;margin-bottom:0.75rem}
+.prob-title{font-family:'Lora',serif;font-size:1rem;font-weight:600;margin-bottom:0.4rem}
+.prob-desc{font-size:0.83rem;color:var(--muted);line-height:1.55}
+.how{padding:5rem 2.5rem;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 2fr;gap:4rem;align-items:start}
+.how-heading{font-family:'Lora',serif;font-size:2rem;line-height:1.2;font-weight:600;margin-top:0.5rem}
+.steps{display:flex;flex-direction:column;gap:1.5rem}
+.step{display:flex;gap:1.25rem;align-items:flex-start}
+.step-num{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:500;flex-shrink:0;margin-top:2px}
+.step-title{font-weight:500;font-size:0.95rem;margin-bottom:0.25rem}
+.step-desc{font-size:0.85rem;color:var(--muted);line-height:1.55}
+.pricing{padding:5rem 2.5rem;border-top:1px solid var(--border);text-align:center}
+.pricing h2{font-family:'Lora',serif;font-size:2rem;font-weight:600;margin-bottom:0.75rem}
+.pricing-sub{color:var(--muted);margin-bottom:3rem;font-size:0.95rem}
+.price-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:12px;overflow:hidden;max-width:600px;margin:0 auto}
+.price-card{background:var(--cream);padding:2rem 1.75rem;text-align:left}
+.price-card.highlight{background:var(--ink);color:var(--white)}
+.price-tier{font-size:0.8rem;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);margin-bottom:0.75rem}
+.price-card.highlight .price-tier{color:rgba(255,255,255,0.5)}
+.price-amount{font-family:'Lora',serif;font-size:2.4rem;font-weight:600;margin-bottom:0.25rem}
+.price-period{font-size:0.82rem;color:var(--muted);margin-bottom:1.5rem}
+.price-card.highlight .price-period{color:rgba(255,255,255,0.5)}
+.price-features{list-style:none;display:flex;flex-direction:column;gap:0.6rem}
+.price-features li{font-size:0.85rem;display:flex;align-items:center;gap:8px;color:var(--muted)}
+.price-card.highlight .price-features li{color:rgba(255,255,255,0.7)}
+.price-features li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.price-card.highlight .price-features li::before{background:#5BAD6F}
+.footer-cta{padding:5rem 2.5rem;border-top:1px solid var(--border);text-align:center}
+.footer-cta h2{font-family:'Lora',serif;font-size:2.2rem;font-weight:600;margin-bottom:1rem}
+.footer-cta p{color:var(--muted);margin-bottom:2rem;font-size:0.95rem}
+.footer-cta .signup-form{margin:0 auto;justify-content:center}
+footer{padding:1.5rem 2.5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.footer-logo{font-family:'Lora',serif;font-size:1rem;font-weight:600}
+.footer-logo span{color:var(--accent)}
+.footer-note{font-size:0.78rem;color:var(--muted)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:0.4;transform:scale(1)}50%{opacity:1;transform:scale(1.2)}}
+.msg:nth-child(1){animation-delay:0.1s}.msg:nth-child(2){animation-delay:0.5s}.msg:nth-child(3){animation-delay:0.9s}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">admin<span>ly</span></div>
+  <button class="nav-cta" onclick="document.getElementById('signup').focus()">Join the waitlist</button>
+</nav>
+<section class="hero">
+  <div class="hero-left">
+    <div class="eyebrow"><span class="dot"></span> Now in early access</div>
+    <h1>Your life admin,<br><em>finally handled.</em></h1>
+    <p class="hero-sub">Adminly is your AI assistant for the boring-but-important stuff — bills, subscriptions, letters, reminders. Just describe the problem. We sort it.</p>
+    <div class="signup-form">
+      <input type="email" id="signup" placeholder="Your email address"/>
+      <button id="btn1" onclick="handleSignup('signup','btn1','success1','error1')">Join waitlist</button>
+    </div>
+    <div class="success-msg" id="success1">&#10003; You're on the list — we'll be in touch soon!</div>
+    <div class="error-msg" id="error1"></div>
+    <p class="hero-note">Free to join. No spam. Ever.</p>
+    <div class="count">
+      <div class="avatars">
+        <div class="av a1">JR</div><div class="av a2">ML</div><div class="av a3">SK</div>
+      </div>
+      <span class="count-text"><strong>247 people</strong> already on the waitlist</span>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="chat-mockup">
+      <div class="chat-header">
+        <div class="chat-avatar">A</div>
+        <div><div class="chat-name">Adminly</div><div class="chat-status">&#9679; Online</div></div>
+      </div>
+      <div class="msg msg-user"><div class="msg-user-inner">I think I'm being overcharged on my energy bill and I don't know what to do</div></div>
+      <div class="msg msg-ai"><div class="msg-sm">A</div><div class="msg-ai-inner">Got it. I'll draft a formal complaint letter to your supplier right now — I just need your account number and the amount you think is wrong.</div></div>
+      <div class="msg msg-user"><div class="msg-user-inner">Account 8821045, charged £340 but should be £180</div></div>
+      <div class="typing"><div class="msg-sm">A</div><div class="dots"><div class="d"></div><div class="d"></div><div class="d"></div></div></div>
+      <div class="tasks-strip">
+        <div class="tasks-label">Your admin board</div>
+        <div class="task"><div class="task-dot td-done"></div><span class="task-text task-done">Cancel unused Headspace sub — saved £95.88/yr</span></div>
+        <div class="task"><div class="task-dot td-pending"></div><span class="task-text">Energy complaint letter — drafting</span></div>
+        <div class="task"><div class="task-dot td-waiting"></div><span class="task-text">Car insurance renewal — due in 18 days</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="problems">
+  <div class="section-label">The problem we solve</div>
+  <div class="problems-grid">
+    <div class="prob"><div class="prob-icon">&#128140;</div><div class="prob-title">Letters you dread writing</div><div class="prob-desc">Complaints, cancellations, appeals — Adminly drafts them in seconds, in the right tone.</div></div>
+    <div class="prob"><div class="prob-icon">&#128184;</div><div class="prob-title">Money quietly leaving</div><div class="prob-desc">Forgotten subscriptions, auto-renewals, overcharges. We track what matters and flag it before it hurts.</div></div>
+    <div class="prob"><div class="prob-icon">&#128197;</div><div class="prob-title">Deadlines you miss</div><div class="prob-desc">MOT, insurance renewals, council tax deadlines — we remind you before it's too late, not after.</div></div>
+  </div>
+</section>
+<section class="how">
+  <div>
+    <div class="section-label">How it works</div>
+    <div class="how-heading">Three steps to a clearer head</div>
+  </div>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div><div class="step-title">Tell us what's bothering you</div><div class="step-desc">No forms. Just chat. "My landlord still hasn't fixed the boiler" is enough to get started.</div></div></div>
+    <div class="step"><div class="step-num">2</div><div><div class="step-title">We handle the heavy lifting</div><div class="step-desc">Adminly drafts letters, researches your rights, and prepares everything you need — in under a minute.</div></div></div>
+    <div class="step"><div class="step-num">3</div><div><div class="step-title">Review, send, and move on</div><div class="step-desc">One click to approve. We track what's pending and follow up if needed. You forget about it.</div></div></div>
+  </div>
+</section>
+<section class="pricing">
+  <div class="section-label">Simple pricing</div>
+  <h2>Pay for what you use</h2>
+  <p class="pricing-sub">No hidden fees. Cancel anytime.</p>
+  <div class="price-cards">
+    <div class="price-card">
+      <div class="price-tier">Starter</div>
+      <div class="price-amount">Free</div>
+      <div class="price-period">Forever</div>
+      <ul class="price-features">
+        <li>5 tasks per month</li>
+        <li>Letter drafting</li>
+        <li>Basic reminders</li>
+      </ul>
+    </div>
+    <div class="price-card highlight">
+      <div class="price-tier">Pro</div>
+      <div class="price-amount">£9</div>
+      <div class="price-period">per month</div>
+      <ul class="price-features">
+        <li>Unlimited tasks</li>
+        <li>Full admin board</li>
+        <li>Auto-reminders &amp; tracking</li>
+        <li>Priority support</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<section class="footer-cta">
+  <h2>Stop putting it off.</h2>
+  <p>Join the waitlist and be first in when we launch.</p>
+  <div class="signup-form">
+    <input type="email" id="signup2" placeholder="Your email address"/>
+    <button id="btn2" onclick="handleSignup('signup2','btn2','success2','error2')">Join waitlist</button>
+  </div>
+  <div class="success-msg" id="success2">&#10003; You're on the list — we'll be in touch soon!</div>
+  <div class="error-msg" id="error2"></div>
+</section>
+<footer>
+  <div class="footer-logo">admin<span>ly</span></div>
+  <div class="footer-note">&#169; 2026 Adminly. Hull, England.</div>
+</footer>
+<script>
+async function handleSignup(inputId, btnId, successId, errorId) {
+  const input = document.getElementById(inputId);
+  const btn = document.getElementById(btnId);
+  const successEl = document.getElementById(successId);
+  const errorEl = document.getElementById(errorId);
+  const email = input.value.trim();
+  if (!email || !email.includes('@')) {
+    errorEl.textContent = 'Please enter a valid email address.';
+    errorEl.classList.add('show');
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = 'Joining...';
+  errorEl.classList.remove('show');
+  successEl.classList.remove('show');
+  try {
+    const res = await fetch('/api/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email })
+    });
+    const data = await res.json();
+    if (data.success) {
+      input.value = '';
+      input.placeholder = "You're on the list!";
+      input.style.borderColor = '#5BAD6F';
+      btn.textContent = 'Done!';
+      successEl.classList.add('show');
+    } else {
+      if (data.error && data.error.toLowerCase().includes('member exists')) {
+        errorEl.textContent = "You're already on the waitlist!";
+      } else {
+        errorEl.textContent = 'Something went wrong — please try again.';
+      }
+      errorEl.classList.add('show');
+      btn.disabled = false;
+      btn.textContent = 'Join waitlist';
+    }
+  } catch(err) {
+    errorEl.textContent = 'Connection error — please try again.';
+    errorEl.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'Join waitlist';
+  }
+}
+</script>
+</body>
+</html>
+ 
